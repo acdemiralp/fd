@@ -7,7 +7,7 @@
 namespace fd
 {
 template <typename type, type n, type k>
-struct binomial_coefficient_t : std::integral_constant<type, factorial_v<type, n> / (factorial_v<type, k> * factorial_v<type, n - k>)> {};
+struct binomial_coefficient_t : std::integral_constant<type, factorial_v<type, n> / (factorial_v<type, k> * factorial_v<type, n >= k ? n - k : 0>)> {};
 
 template <typename type, type n, type k>
 inline constexpr type binomial_coefficient_v = binomial_coefficient_t<type, n, k>::value;

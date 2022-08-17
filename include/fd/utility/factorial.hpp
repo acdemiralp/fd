@@ -6,9 +6,9 @@
 namespace fd
 {
 template <typename type, type n, typename = std::make_integer_sequence<type, n>>
-struct factorial_t;
+struct factorial_t : std::integral_constant<type, 0> {};
 template <typename type, type n, type... sequence>
-struct factorial_t<type, n, std::integer_sequence<type, sequence...>> : std::integral_constant<type, (... * (sequence + 1))> {};
+struct factorial_t<type, n, std::integer_sequence<type, sequence...>> : std::integral_constant<type, (static_cast<type>(1) * ... * (sequence + 1))> {};
 
 template <typename type, type n>
 inline constexpr type factorial_v = factorial_t<type, n>::value;
