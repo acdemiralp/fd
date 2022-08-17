@@ -2,9 +2,9 @@
 Generic finite differences in C++20.
 
 ### Abstractions
-- [Stencils](core/stencil.hpp) are standard arrays defining a one dimensional arrangement of samples.
-- [Finite difference coefficients](core/coefficients.hpp) are computed from a stencil and a derivative order.
-- [Finite difference functions](core/function.hpp) are generated from stencils and their associated coefficients.
+- [Stencils](include/fd/core/stencil.hpp) are standard arrays defining a one dimensional arrangement of samples.
+- [Finite difference coefficients](include/fd/core/coefficients.hpp) are computed from a stencil and a derivative order.
+- [Finite difference functions](include/fd/core/function.hpp) are generated from stencils and their associated coefficients.
 
 ### Usage
 ```cpp
