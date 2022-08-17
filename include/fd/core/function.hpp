@@ -14,7 +14,7 @@ namespace fd
 template <std::size_t order, typename type, std::size_t size>
 constexpr auto make_function(const std::array<type, size>& stencil, const std::array<type, size>& coefficients)
 {
-  return [stencil, coefficients] (const function<type(const type&)>& f, const type& x, const type& h)
+  return [stencil, coefficients] (const function<type(const type&)>& f, const type& x, const type& h = static_cast<type>(1e-3))
   {
     type sum {};
     constexpr_for<0, size, 1>([&] (const auto i)
