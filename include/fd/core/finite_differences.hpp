@@ -11,26 +11,26 @@ namespace fd
 {
 #ifdef FD_USE_EIGEN
 template <std::size_t order, typename function, typename value>
-constexpr value forward_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value forward_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   static const auto finite_difference_function = make_function<order>(make_forward_stencil<value, order + 1>());
   return finite_difference_function(f, x, h);
 }
 template <std::size_t order, typename function, typename value>
-constexpr value backward_difference  (const function& f, const value& x, const value h = value(1e-3))
+constexpr value backward_difference(const function& f, const value& x, const value h = value(1e-3))
 {
   static const auto finite_difference_function = make_function<order>(make_backward_stencil<value, order + 1>());
   return finite_difference_function(f, x, h);
 }
 template <std::size_t order, typename function, typename value>
-constexpr value central_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value central_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   static const auto finite_difference_function = make_function<order>(make_central_stencil<value, order + 1>());
   return finite_difference_function(f, x, h);
 }
 #else
 template <std::size_t order, typename function, typename value>
-constexpr value forward_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value forward_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   value sum {};
   constexpr_for<0, order, 1>([&] (const auto i)
@@ -43,7 +43,7 @@ constexpr value forward_difference   (const function& f, const value& x, const v
   return sum;
 }
 template <std::size_t order, typename function, typename value>
-constexpr value backward_difference  (const function& f, const value& x, const value h = value(1e-3))
+constexpr value backward_difference(const function& f, const value& x, const value h = value(1e-3))
 {
   value sum {};
   constexpr_for<0, order, 1>([&] (const auto i)
@@ -56,7 +56,7 @@ constexpr value backward_difference  (const function& f, const value& x, const v
   return sum;
 }
 template <std::size_t order, typename function, typename value>
-constexpr value central_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value central_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   value sum {};
   constexpr_for<0, order, 1>([&] (const auto i)
@@ -72,17 +72,17 @@ constexpr value central_difference   (const function& f, const value& x, const v
 
 // Specializations for first order.
 template <typename function, typename value>
-constexpr value forward_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value forward_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   return (f(x + h) - f(x)) / h;
 }
 template <typename function, typename value>
-constexpr value backward_difference  (const function& f, const value& x, const value h = value(1e-3))
+constexpr value backward_difference(const function& f, const value& x, const value h = value(1e-3))
 {
   return (f(x) - f(x - h)) / h;
 }
 template <typename function, typename value>
-constexpr value central_difference   (const function& f, const value& x, const value h = value(1e-3))
+constexpr value central_difference (const function& f, const value& x, const value h = value(1e-3))
 {
   return (f(x + static_cast<value>(0.5) * h) - f(x - static_cast<value>(0.5) * h)) / h;
 }
