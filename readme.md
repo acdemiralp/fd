@@ -33,4 +33,5 @@ See the tests for more.
 - Define `FD_USE_EIGEN` prior to including the headers to enable computing finite difference coefficients of arbitrary orders and stencils.
 
 ### Future Work
+- Multivariate support.
 - Better tests, including CUDA.

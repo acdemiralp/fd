@@ -20,6 +20,8 @@ TEST_CASE("multivariate")
   const auto x  = vector2(0.0f, 0.0f);
   const auto h  = vector2(1.0f, 1.0f);
 
-  fd::forward_difference(f, x, h);
+  const auto fd = fd::forward_difference (f, x, h);
+  const auto bd = fd::backward_difference(f, x, h);
+  const auto cd = fd::central_difference (f, x, h);
 }
 #endif
