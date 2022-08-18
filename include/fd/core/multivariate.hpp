@@ -7,7 +7,7 @@
 
 namespace fd
 {
-// TODO Multivariate stencils.
+// TODO Multivariate stencils (cross i.e. Von Neumann, rotated Von Neumann, square i.e. Moore, R-radial, R-axial, arbitrary).
 // TODO Multivariate coefficients.
 // TODO Multivariate functions.
 // TODO Multivariate finite differences.
