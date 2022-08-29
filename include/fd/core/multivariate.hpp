@@ -2,22 +2,15 @@
 
 #include <array>
 #include <cstddef>
-#include <iostream>
 
+#include <fd/utility/array.hpp>
 #include <fd/utility/constexpr_for.hpp>
+#include <fd/utility/indexing.hpp>
 #include <fd/utility/permute_for.hpp>
 #include <fd/utility/pow.hpp>
 
 namespace fd
 {
-template <typename type, std::size_t dimensions, type value>
-constexpr std::array<type, dimensions> make_constant_array()
-{
-  std::array<type, dimensions> result;
-  std::fill(result.begin(), result.end(), value);
-  return result;
-}
-
 template <typename type, std::size_t dimensions, std::size_t length = 1>
 constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1>     make_von_neumann_stencil() // Cross stencil in 2D.
 {
@@ -41,13 +34,12 @@ constexpr std::array<std::array<type, dimensions>, pow_v<type, length, dimension
 {
   std::array<std::array<type, dimensions>, pow_v<type, length, dimensions>> result {};
 
-  constexpr std::array<type, dimensions> begin     = make_constant_array<type, dimensions, 0     >();
-  constexpr std::array<type, dimensions> end       = make_constant_array<type, dimensions, length>();
-  constexpr std::array<type, dimensions> increment = make_constant_array<type, dimensions, 1     >();
+  constexpr std::array<type, dimensions> begin     = make_filled_array<type, dimensions, 0     >();
+  constexpr std::array<type, dimensions> end       = make_filled_array<type, dimensions, length>();
+  constexpr std::array<type, dimensions> increment = make_filled_array<type, dimensions, 1     >();
   permute_for<type, dimensions, begin, end, increment>([&result] (const std::array<type, dimensions>& index)
   {
-    result[ravel_index(index, end)] = 42;
-    // TODO
+    result[ravel_multi_index(index, end)] = index; // TODO
   });
 
   return result;

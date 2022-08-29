@@ -6,8 +6,10 @@
 #include <fd/core/function.hpp>
 #include <fd/core/multivariate.hpp>
 #include <fd/core/stencil.hpp>
+#include <fd/utility/array.hpp>
 #include <fd/utility/binomial_coefficient.hpp>
 #include <fd/utility/constexpr_for.hpp>
 #include <fd/utility/factorial.hpp>
+#include <fd/utility/indexing.hpp>
 #include <fd/utility/permute_for.hpp>
 #include <fd/utility/pow.hpp>
