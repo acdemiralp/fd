@@ -12,7 +12,7 @@
 namespace fd
 {
 template <typename type, std::size_t dimensions, std::size_t length = 1>
-constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1>     make_von_neumann_stencil() // Cross stencil in 2D.
+constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1>            make_von_neumann_stencil() // Cross stencil in 2D.
 {
   std::array<std::array<type, dimensions>, 2 * dimensions * length + 1> result {};
   constexpr_for<0, dimensions, 1>([&result] (const auto dimension)
@@ -22,7 +22,7 @@ constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1> 
     {
       constexpr static std::size_t index(offset + sample.value);
       if constexpr (sample.value < length)
-        std::get<dimension.value>(std::get<index>(result)) = sample.value - length;
+        std::get<dimension.value>(std::get<index>(result)) = static_cast<type>(sample.value) - length;
       else
         std::get<dimension.value>(std::get<index>(result)) = sample.value % length + 1;
     });
@@ -30,16 +30,22 @@ constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1> 
   return result;
 }
 template <typename type, std::size_t dimensions, std::size_t length = 1>
-constexpr std::array<std::array<type, dimensions>, pow_v<type, length, dimensions>> make_moore_stencil      () // Square stencil in 2D.
+constexpr std::array<std::array<type, dimensions>, pow_v<std::size_t, length, dimensions>> make_moore_stencil      () // Square stencil in 2D.
 {
-  std::array<std::array<type, dimensions>, pow_v<type, length, dimensions>> result {};
+  std::array<std::array<type, dimensions>, pow_v<std::size_t, length, dimensions>> result {};
 
   constexpr std::array<type, dimensions> begin     = make_filled_array<type, dimensions, 0     >();
   constexpr std::array<type, dimensions> end       = make_filled_array<type, dimensions, length>();
   constexpr std::array<type, dimensions> increment = make_filled_array<type, dimensions, 1     >();
   permute_for<type, dimensions, begin, end, increment>([&result] (const std::array<type, dimensions>& index)
   {
-    result[ravel_multi_index(index, end)] = index; // TODO
+    auto& value = result[ravel_multi_index(index, end)];
+    constexpr_for<0, dimensions, 1>([&value, &index] (const auto i)
+    {
+      std::get<i.value>(value) = std::get<i.value>(index) - length / 2;
+      if constexpr (length % 2 == 0)
+        std::get<i.value>(value) += static_cast<type>(0.5);
+    });
   });
 
   return result;
