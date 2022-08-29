@@ -3,6 +3,10 @@
 #include <array>
 #include <cstddef>
 
+#ifdef FD_USE_EIGEN
+#include <Eigen/Dense>
+#endif
+
 #include <fd/utility/array.hpp>
 #include <fd/utility/constexpr_for.hpp>
 #include <fd/utility/indexing.hpp>
@@ -12,9 +16,10 @@
 namespace fd
 {
 template <typename type, std::size_t dimensions, std::size_t length = 1>
-constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1>            make_von_neumann_stencil() // Cross stencil in 2D.
+constexpr auto make_von_neumann_stencil() // Cross stencil in 2D.
 {
   std::array<std::array<type, dimensions>, 2 * dimensions * length + 1> result {};
+
   constexpr_for<0, dimensions, 1>([&result] (const auto dimension)
   {
     constexpr static std::size_t offset(2 * dimension.value * length + 1);
@@ -27,10 +32,11 @@ constexpr std::array<std::array<type, dimensions>, 2 * dimensions * length + 1> 
         std::get<dimension.value>(std::get<index>(result)) = sample.value % length + 1;
     });
   });
+
   return result;
 }
 template <typename type, std::size_t dimensions, std::size_t length = 1>
-constexpr std::array<std::array<type, dimensions>, pow_v<std::size_t, length, dimensions>> make_moore_stencil      () // Square stencil in 2D.
+constexpr auto make_moore_stencil      () // Square stencil in 2D.
 {
   std::array<std::array<type, dimensions>, pow_v<std::size_t, length, dimensions>> result {};
 
@@ -52,9 +58,21 @@ constexpr std::array<std::array<type, dimensions>, pow_v<std::size_t, length, di
 }
 // TODO: More stencils. Rotated von Neumann, R-radial, R-axial, ...
 
+#ifdef FD_USE_EIGEN
+template <std::size_t order, typename type, std::size_t dimensions, std::size_t size>
+constexpr auto make_coefficients       (const std::array<std::array<type, dimensions>, size>& stencil)
+{
+  static_assert(order < size, "Order must be less than stencil size.");
 
+  std::array<type, size> result {};
+  // TODO: Multivariate coefficients.
+  //         [0,  1]              -1
+  // [-1, 0] [0,  0] [1, 0] => -1  4 -1
+  //         [0, -1]              -1
+  return result;
+}
+#endif
 
-// TODO Multivariate coefficients.
 // TODO Multivariate functions.
 // TODO Multivariate finite differences.
 }
