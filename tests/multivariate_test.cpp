@@ -9,19 +9,24 @@
 #ifdef FD_USE_EIGEN
 TEST_CASE("multivariate")
 {
-  using vector2 = Eigen::Vector2f;
-  using matrix2 = Eigen::Matrix2f;
+  auto von_neumann_dim1_len1 = fd::make_von_neumann_stencil<std::int64_t, 1, 1>();
+  auto von_neumann_dim2_len1 = fd::make_von_neumann_stencil<std::int64_t, 2, 1>();
+  auto von_neumann_dim3_len1 = fd::make_von_neumann_stencil<std::int64_t, 3, 1>();
+  auto von_neumann_dim1_len2 = fd::make_von_neumann_stencil<std::int64_t, 1, 2>();
+  auto von_neumann_dim2_len2 = fd::make_von_neumann_stencil<std::int64_t, 2, 2>();
+  auto von_neumann_dim3_len2 = fd::make_von_neumann_stencil<std::int64_t, 3, 2>();
+  auto von_neumann_dim1_len3 = fd::make_von_neumann_stencil<std::int64_t, 1, 3>();
+  auto von_neumann_dim2_len3 = fd::make_von_neumann_stencil<std::int64_t, 2, 3>();
+  auto von_neumann_dim3_len3 = fd::make_von_neumann_stencil<std::int64_t, 3, 3>();
 
-  // Vector valued function of vector parameter.
-  const auto f  = [ ] (const vector2& x)
-  {
-    return vector2(x[1], x[0]);
-  };
-  const auto x  = vector2(0.0f, 0.0f);
-  const auto h  = vector2(1.0f, 1.0f);
-
-  const auto fd = fd::forward_difference (f, x, h);
-  const auto bd = fd::backward_difference(f, x, h);
-  const auto cd = fd::central_difference (f, x, h);
+  auto moore_dim1_len1       = fd::make_moore_stencil      <std::int64_t, 1, 1>();
+  auto moore_dim2_len1       = fd::make_moore_stencil      <std::int64_t, 2, 1>();
+  auto moore_dim3_len1       = fd::make_moore_stencil      <std::int64_t, 3, 1>();
+  auto moore_dim1_len2       = fd::make_moore_stencil      <std::int64_t, 1, 2>();
+  auto moore_dim2_len2       = fd::make_moore_stencil      <std::int64_t, 2, 2>();
+  auto moore_dim3_len2       = fd::make_moore_stencil      <std::int64_t, 3, 2>();
+  auto moore_dim1_len3       = fd::make_moore_stencil      <std::int64_t, 1, 3>();
+  auto moore_dim2_len3       = fd::make_moore_stencil      <std::int64_t, 2, 3>();
+  auto moore_dim3_len3       = fd::make_moore_stencil      <std::int64_t, 3, 3>();
 }
 #endif
